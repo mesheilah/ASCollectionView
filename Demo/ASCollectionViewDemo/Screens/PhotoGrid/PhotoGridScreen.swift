@@ -190,8 +190,10 @@ struct DynamicNavigationView<Content: View>: View {
 
 struct DynamicNavigationScreen<Content: View>: View {
 	var content: Content
-	@State var currentContent: AnyView = AnyView(EmptyView())
-	@State var active: Bool = false
+	@State var currentContent: AnyView?
+	var hasContent: Binding<Bool> {
+		Binding(get: { self.currentContent != nil }, set: { if !$0 { self.currentContent = nil } })
+	}
 	
 	init(@ViewBuilder _ content: (() -> Content)) {
 		self.content = content()
@@ -200,11 +202,10 @@ struct DynamicNavigationScreen<Content: View>: View {
 	var body: some View {
 		VStack {
 				content
-				NavigationLink(destination: currentContent, isActive: $active) { EmptyView() }
+				NavigationLink(destination: currentContent, isActive: hasContent) { EmptyView() }
 		}
 		.environment(\.dynamicNavPush, {
 			self.currentContent = $0
-			self.active = true
 		})
 	}
 }
