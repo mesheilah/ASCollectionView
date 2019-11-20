@@ -6,7 +6,7 @@ struct MainView: View
 {
 	var body: some View
 	{
-		NavigationView
+		DynamicNavigationView
 		{
 			List {
 				NavigationLink(destination: PhotoGridScreen())

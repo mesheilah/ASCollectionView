@@ -29,31 +29,33 @@ struct PhotoGridScreen: View
 				NSItemProvider(object: item.url as NSURL)
 		})
 		{ item, state in
-			ZStack(alignment: .bottomTrailing)
-			{
-				GeometryReader
-				{ geom in
-					ASRemoteImageView(item.squareThumbURL)
-						.aspectRatio(1, contentMode: .fill)
-						.frame(width: geom.size.width, height: geom.size.height)
-						.clipped()
-						.opacity(state.isSelected ? 0.7 : 1.0)
-				}
-
-				if state.isSelected
+			DynamicNavigationButton(destination: Text("Item number \(item.offset)")) {
+				ZStack(alignment: .bottomTrailing)
 				{
-					ZStack
-					{
-						Circle()
-							.fill(Color.blue)
-						Circle()
-							.strokeBorder(Color.white, lineWidth: 2)
-						Image(systemName: "checkmark")
-							.font(.system(size: 10, weight: .bold))
-							.foregroundColor(.white)
+					GeometryReader
+						{ geom in
+							ASRemoteImageView(item.squareThumbURL)
+								.aspectRatio(1, contentMode: .fill)
+								.frame(width: geom.size.width, height: geom.size.height)
+								.clipped()
+								.opacity(state.isSelected ? 0.7 : 1.0)
 					}
-					.frame(width: 20, height: 20)
-					.padding(10)
+					
+					if state.isSelected
+					{
+						ZStack
+							{
+								Circle()
+									.fill(Color.blue)
+								Circle()
+									.strokeBorder(Color.white, lineWidth: 2)
+								Image(systemName: "checkmark")
+									.font(.system(size: 10, weight: .bold))
+									.foregroundColor(.white)
+						}
+						.frame(width: 20, height: 20)
+						.padding(10)
+					}
 				}
 			}
 		}
@@ -61,27 +63,29 @@ struct PhotoGridScreen: View
 
 	var body: some View
 	{
-		ASCollectionView(
-			selectedItems: $selectedItems,
-			section: section)
-			.layout(self.layout)
-			.navigationBarTitle("Explore", displayMode: .inline)
-			.navigationBarItems(
-				trailing:
-				HStack(spacing: 20)
-				{
-					if self.isEditing
+		DynamicNavigationScreen {
+			ASCollectionView(
+				selectedItems: $selectedItems,
+				section: section)
+				.layout(self.layout)
+				.navigationBarTitle("Explore", displayMode: .inline)
+				.navigationBarItems(
+					trailing:
+					HStack(spacing: 20)
 					{
-						Button(action: {
-							self.data.remove(atOffsets: self.selectedItems)
-						})
+						if self.isEditing
 						{
-							Image(systemName: "trash")
+							Button(action: {
+								self.data.remove(atOffsets: self.selectedItems)
+							})
+							{
+								Image(systemName: "trash")
+							}
 						}
-					}
-
-					EditButton()
-			})
+						
+						EditButton()
+				})
+		}
 	}
 
 	func onCellEvent(_ event: CellEvent<Post>)
@@ -164,5 +168,77 @@ struct GridView_Previews: PreviewProvider
 	static var previews: some View
 	{
 		PhotoGridScreen()
+	}
+}
+
+
+struct DynamicNavigationView<Content: View>: View {
+	var content: Content
+	
+	init(@ViewBuilder _ content: (() -> Content)) {
+		self.content = content()
+	}
+	
+	var body: some View {
+		NavigationView {
+			DynamicNavigationScreen {
+				content
+			}
+		}
+	}
+}
+
+struct DynamicNavigationScreen<Content: View>: View {
+	var content: Content
+	@State var currentContent: AnyView = AnyView(EmptyView())
+	@State var active: Bool = false
+	
+	init(@ViewBuilder _ content: (() -> Content)) {
+		self.content = content()
+	}
+	
+	var body: some View {
+		VStack {
+				content
+				NavigationLink(destination: currentContent, isActive: $active) { EmptyView() }
+		}
+		.environment(\.dynamicNavPush, {
+			self.currentContent = $0
+			self.active = true
+		})
+	}
+}
+
+struct DynamicNavigationButton<Label: View, Destination: View>: View {
+	var destination: Destination
+	var label: Label
+	@Environment(\.dynamicNavPush) var dynamicNavPush
+	
+	init(destination: Destination, @ViewBuilder label: (() -> Label)) {
+		self.destination = destination
+		self.label = label()
+	}
+	
+	var body: some View {
+		Button(action: {
+			self.dynamicNavPush?(AnyView(self.destination))
+		}) {
+			label
+		}
+		.buttonStyle(PlainButtonStyle())
+	}
+}
+
+struct EnvironmentKeyASDynamicNavPush: EnvironmentKey
+{
+	static let defaultValue: ((AnyView) -> ())? = nil
+}
+
+public extension EnvironmentValues
+{
+	var dynamicNavPush: ((AnyView) -> ())?
+	{
+		get { return self[EnvironmentKeyASDynamicNavPush.self] }
+		set { self[EnvironmentKeyASDynamicNavPush.self] = newValue }
 	}
 }
