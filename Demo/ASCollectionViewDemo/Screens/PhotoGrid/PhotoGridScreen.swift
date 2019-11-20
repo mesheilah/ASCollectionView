@@ -29,7 +29,11 @@ struct PhotoGridScreen: View
 				NSItemProvider(object: item.url as NSURL)
 		})
 		{ item, state in
-			DynamicNavigationButton(destination: Text("Item number \(item.offset)")) {
+			DynamicNavigationButton(
+				destination: DynamicNavigationDismissButton.popToRoot {
+					Text("Item number \(item.offset)")
+				}
+			) {
 				ZStack(alignment: .bottomTrailing)
 				{
 					GeometryReader
@@ -181,39 +185,51 @@ struct DynamicNavigationView<Content: View>: View {
 	
 	var body: some View {
 		NavigationView {
-			DynamicNavigationScreen {
+			DynamicNavigationScreen(screenName: dynamicNavigationViewMainScreen) {
 				content
 			}
 		}
 	}
 }
 
+let dynamicNavigationViewMainScreen = "ASDynamicNavigationViewMainScreen"
+
 struct DynamicNavigationScreen<Content: View>: View {
+	var screenName: String?
 	var content: Content
 	@State var currentContent: AnyView?
+	
 	var hasContent: Binding<Bool> {
 		Binding(get: { self.currentContent != nil }, set: { if !$0 { self.currentContent = nil } })
 	}
 	
-	init(@ViewBuilder _ content: (() -> Content)) {
+	init(screenName: String? = nil, @ViewBuilder _ content: (() -> Content)) {
+		self.screenName = screenName
 		self.content = content()
+	}
+	
+	func modifyEnvironment<T: View>(_ view: T) -> some View {
+		view.transformEnvironment(\.dynamicNavState) { state in
+			state.addScreen(
+				DynamicNavState.Screen(name: self.screenName,
+									   push: { self.currentContent = $0 },
+									   pop: { self.currentContent = nil })
+			)
+		}
 	}
 	
 	var body: some View {
 		VStack {
-				content
-				NavigationLink(destination: currentContent, isActive: hasContent) { EmptyView() }
+			modifyEnvironment(content)
+			NavigationLink(destination: modifyEnvironment(currentContent), isActive: hasContent) { EmptyView() }
 		}
-		.environment(\.dynamicNavPush, {
-			self.currentContent = $0
-		})
 	}
 }
 
 struct DynamicNavigationButton<Label: View, Destination: View>: View {
 	var destination: Destination
 	var label: Label
-	@Environment(\.dynamicNavPush) var dynamicNavPush
+	@Environment(\.dynamicNavState) var dynamicNavState
 	
 	init(destination: Destination, @ViewBuilder label: (() -> Label)) {
 		self.destination = destination
@@ -222,7 +238,7 @@ struct DynamicNavigationButton<Label: View, Destination: View>: View {
 	
 	var body: some View {
 		Button(action: {
-			self.dynamicNavPush?(AnyView(self.destination))
+			self.dynamicNavState.pushView(self.destination)
 		}) {
 			label
 		}
@@ -230,16 +246,90 @@ struct DynamicNavigationButton<Label: View, Destination: View>: View {
 	}
 }
 
-struct EnvironmentKeyASDynamicNavPush: EnvironmentKey
-{
-	static let defaultValue: ((AnyView) -> ())? = nil
+
+struct DynamicNavigationDismissButton<Label: View>: View {
+	var label: Label
+	var dismissToScreenNamed: String? //If nil, defaults to nearest screen
+	@Environment(\.dynamicNavState) var dynamicNavState
+	
+	init(dismissToScreenNamed: String? = nil, @ViewBuilder label: (() -> Label)) {
+		self.dismissToScreenNamed = dismissToScreenNamed
+		self.label = label()
+	}
+	
+	var body: some View {
+		Button(action: {
+			self.dynamicNavState.popToScreen(named: self.dismissToScreenNamed)
+		}) {
+			label
+		}
+		.buttonStyle(PlainButtonStyle())
+	}
+	
+	static func popToRoot(@ViewBuilder label: (() -> Label)) -> Self {
+		self.init(dismissToScreenNamed: dynamicNavigationViewMainScreen, label: label)
+	}
 }
 
-public extension EnvironmentValues
+struct DynamicNavState {
+	var screens: [Screen] = []
+	struct Screen {
+		var name: String?
+		var push: ((AnyView) -> ())
+		var pop: (() -> ())
+	}
+	
+	//Used to construct the environment
+	mutating func addScreen(_ screen: Screen) {
+		screens.append(screen)
+	}
+	
+	//Used to present a view
+	func pushView<Content: View>(_ view: Content, toScreenNamed screenName: String? = nil) {
+		let erasedView = AnyView(view)
+		if let screenName = screenName,
+		   let screen = screens.last(where: { $0.name == screenName }) {
+			screen.push(erasedView)
+		} else {
+			if screenName != nil { print("Attempted to push to screenName that doesn't exist in the hierarchy, pushing to nearest screen") }
+			guard let screen = screens.last else {
+				return
+			}
+			screen.push(erasedView)
+		}
+	}
+	
+	//Used to pop to the named screen (or nearest screen)
+	func popToScreen(named screenName: String?) {
+		if let screenName = screenName {
+			guard
+				let screenIndex = screens.lastIndex(where: { $0.name == screenName })
+				else {
+					print("Attempted to dismiss to screenName that doesn't exist in the hierarchy")
+					return
+			}
+			let screensToPop = screens.suffix(from: screenIndex).reversed()
+			screensToPop.forEach { $0.pop() }
+			#warning("This still won't pop further than one up the hierarchy")
+		} else {
+			guard let screen = screens.last else {
+				return
+			}
+			screen.pop()
+		}
+	}
+}
+
+struct EnvironmentKeyASDynamicNavState: EnvironmentKey
 {
-	var dynamicNavPush: ((AnyView) -> ())?
+	static let defaultValue: DynamicNavState = DynamicNavState()
+}
+
+extension EnvironmentValues
+{
+	var dynamicNavState: DynamicNavState
 	{
-		get { return self[EnvironmentKeyASDynamicNavPush.self] }
-		set { self[EnvironmentKeyASDynamicNavPush.self] = newValue }
+		get { return self[EnvironmentKeyASDynamicNavState.self] }
+		set { self[EnvironmentKeyASDynamicNavState.self] = newValue }
 	}
 }
