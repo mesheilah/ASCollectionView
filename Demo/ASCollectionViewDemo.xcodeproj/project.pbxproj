@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B80E3DAC23856908000E3F8D /* ASNavigationView in Frameworks */ = {isa = PBXBuildFile; productRef = B80E3DAB23856908000E3F8D /* ASNavigationView */; };
 		B8268B522363EF03008C99A3 /* RemindersScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8268B512363EF03008C99A3 /* RemindersScreen.swift */; };
 		B8268B542363EF1B008C99A3 /* GroupLarge.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8268B532363EF1B008C99A3 /* GroupLarge.swift */; };
 		B8268B562363EF25008C99A3 /* GroupSmall.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8268B552363EF25008C99A3 /* GroupSmall.swift */; };
@@ -80,6 +81,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B80E3DAC23856908000E3F8D /* ASNavigationView in Frameworks */,
 				B8A95E3C2360800D0017A7EA /* MagazineLayout in Frameworks */,
 				B86C6F2F234B0B8600522AEF /* ASCollectionView in Frameworks */,
 			);
@@ -265,6 +267,7 @@
 			packageProductDependencies = (
 				B86C6F2E234B0B8600522AEF /* ASCollectionView */,
 				B8A95E3B2360800D0017A7EA /* MagazineLayout */,
+				B80E3DAB23856908000E3F8D /* ASNavigationView */,
 			);
 			productName = ASCollectionViewDemo;
 			productReference = B86C6F13234B078600522AEF /* ASCollectionViewDemo.app */;
@@ -296,6 +299,7 @@
 			mainGroup = B86C6F0A234B078600522AEF;
 			packageReferences = (
 				B8A95E3A2360800D0017A7EA /* XCRemoteSwiftPackageReference "MagazineLayout" */,
+				B80E3DAA23856908000E3F8D /* XCRemoteSwiftPackageReference "ASNavigationView" */,
 			);
 			productRefGroup = B86C6F14234B078600522AEF /* Products */;
 			projectDirPath = "";
@@ -545,6 +549,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		B80E3DAA23856908000E3F8D /* XCRemoteSwiftPackageReference "ASNavigationView" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/apptekstudios/ASNavigationView.git";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
 		B8A95E3A2360800D0017A7EA /* XCRemoteSwiftPackageReference "MagazineLayout" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/airbnb/MagazineLayout";
@@ -556,6 +568,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		B80E3DAB23856908000E3F8D /* ASNavigationView */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B80E3DAA23856908000E3F8D /* XCRemoteSwiftPackageReference "ASNavigationView" */;
+			productName = ASNavigationView;
+		};
 		B86C6F2E234B0B8600522AEF /* ASCollectionView */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = ASCollectionView;

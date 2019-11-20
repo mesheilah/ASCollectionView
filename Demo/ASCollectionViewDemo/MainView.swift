@@ -1,12 +1,13 @@
 // ASCollectionView. Created by Apptek Studios 2019
 
 import SwiftUI
+import ASNavigationView
 
 struct MainView: View
 {
 	var body: some View
 	{
-		DynamicNavigationView
+		ASNavigationView
 		{
 			List {
 				NavigationLink(destination: PhotoGridScreen())

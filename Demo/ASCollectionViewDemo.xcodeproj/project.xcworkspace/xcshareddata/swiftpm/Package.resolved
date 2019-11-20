@@ -2,6 +2,15 @@
   "object": {
     "pins": [
       {
+        "package": "ASNavigationView",
+        "repositoryURL": "https://github.com/apptekstudios/ASNavigationView.git",
+        "state": {
+          "branch": "master",
+          "revision": "05b643df64b841d40d4687909ea1a2879d9579d1",
+          "version": null
+        }
+      },
+      {
         "package": "MagazineLayout",
         "repositoryURL": "https://github.com/airbnb/MagazineLayout",
         "state": {
