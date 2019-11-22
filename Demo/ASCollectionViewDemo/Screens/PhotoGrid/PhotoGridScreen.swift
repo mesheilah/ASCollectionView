@@ -9,6 +9,7 @@ struct PhotoGridScreen: View
 {
 	@State var data: [Post] = DataSource.postsForGridSection(1, number: 1000)
 	@State var selectedItems: IndexSet = []
+	@State var detailViewShown: Bool = false
 
 	@Environment(\.editMode) private var editMode
 	var isEditing: Bool
@@ -34,11 +35,36 @@ struct PhotoGridScreen: View
 				VStack(spacing: 20) {
 					Text("Item number \(item.offset)")
 						.font(.title)
-					ASNavigationDismissButton {
-						Text("Press here to dismiss")
+					ASNavigationButton(destination: {
+						VStack(spacing: 20) {
+							Text("Deep nav layer...")
+							ASNavigationDismissButton(toScreenNamed: "PHOTOGRID") {
+								Text("Press here to dismiss DIRECT to the photo grid")
+									.padding()
+									.background(Color(.secondarySystemBackground))
+							}
+							ASNavigationPopToRootButton {
+								Text("Press here to pop to root")
+									.padding()
+									.background(Color(.secondarySystemBackground))
+							}
+						}
+					}) {
+						Text("Deeper nav layer")
 							.padding()
 							.background(Color(.secondarySystemBackground))
 					}
+					ASNavigationDismissButton {
+						Text("Press here to dismiss (DismissButton)")
+							.padding()
+							.background(Color(.secondarySystemBackground))
+					}
+					ASNavigationPopToRootButton {
+						Text("Press here to pop to root")
+							.padding()
+							.background(Color(.secondarySystemBackground))
+					}
+					
 				}
 			}) {
 				ZStack(alignment: .bottomTrailing)
@@ -75,29 +101,27 @@ struct PhotoGridScreen: View
 
 	var body: some View
 	{
-		ASNavigationLayer {
-			ASCollectionView(
-				selectedItems: $selectedItems,
-				section: section)
-				.layout(self.layout)
-				.navigationBarTitle("Explore", displayMode: .inline)
-				.navigationBarItems(
-					trailing:
-					HStack(spacing: 20)
+		ASCollectionView(
+			selectedItems: $selectedItems,
+			section: section)
+			.layout(self.layout)
+			.navigationBarTitle("Explore", displayMode: .large)
+			.navigationBarItems(
+				trailing:
+				HStack(spacing: 20)
+				{
+					if self.isEditing
 					{
-						if self.isEditing
+						Button(action: {
+							self.data.remove(atOffsets: self.selectedItems)
+						})
 						{
-							Button(action: {
-								self.data.remove(atOffsets: self.selectedItems)
-							})
-							{
-								Image(systemName: "trash")
-							}
+							Image(systemName: "trash")
 						}
-						
-						EditButton()
-				})
-		}
+					}
+					
+					EditButton()
+			})
 	}
 
 	func onCellEvent(_ event: CellEvent<Post>)

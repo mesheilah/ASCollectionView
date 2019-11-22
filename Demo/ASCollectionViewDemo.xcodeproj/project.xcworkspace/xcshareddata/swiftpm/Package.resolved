@@ -3,7 +3,7 @@
     "pins": [
       {
         "package": "ASNavigationView",
-        "repositoryURL": "https://github.com/apptekstudios/ASNavigationView.git",
+        "repositoryURL": "https://github.com/apptekstudios/ASNavigationView",
         "state": {
           "branch": "master",
           "revision": "05b643df64b841d40d4687909ea1a2879d9579d1",

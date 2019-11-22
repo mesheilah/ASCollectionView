@@ -7,45 +7,45 @@ struct MainView: View
 {
 	var body: some View
 	{
-		ASNavigationView
-		{
+		ASNavigationView {
+
 			List {
-				NavigationLink(destination: PhotoGridScreen())
+				ASNavigationButton(screenName: "PHOTOGRID", destination: PhotoGridScreen())
 				{
 					Image(systemName: "1.square.fill")
 					Text("Photo grid (with edit mode, selection)")
 				}
-				NavigationLink(destination: AppStoreScreen())
+				ASNavigationButton(destination: AppStoreScreen())
 				{
 					Image(systemName: "2.square.fill")
 					Text("App Store Layout")
 				}
-				NavigationLink(destination: TagsScreen())
+				ASNavigationButton(destination: TagsScreen())
 				{
 					Image(systemName: "3.square.fill")
 					Text("Tags Flow Layout")
 				}
-				NavigationLink(destination: RemindersScreen())
+				ASNavigationButton(destination: RemindersScreen())
 				{
 					Image(systemName: "4.square.fill")
 					Text("Reminders Layout")
 				}
-				NavigationLink(destination: InstaFeedScreen())
+				ASNavigationButton(destination: InstaFeedScreen())
 				{
 					Image(systemName: "5.square.fill")
 					Text("Insta Feed (table view)")
 				}
-				NavigationLink(destination: MagazineLayoutScreen())
+				ASNavigationButton(destination: MagazineLayoutScreen())
 				{
 					Image(systemName: "6.square.fill")
 					Text("Magazine Layout (with context menu)")
 				}
-				NavigationLink(destination: WaterfallScreen())
+				ASNavigationButton(destination: WaterfallScreen())
 				{
 					Image(systemName: "7.square.fill")
 					Text("Waterfall (Work in progress)")
 				}
-				NavigationLink(destination: AdjustableGridScreen())
+				ASNavigationButton(destination: AdjustableGridScreen())
 				{
 					Image(systemName: "8.square.fill")
 					Text("Adjustable layout")
@@ -53,8 +53,8 @@ struct MainView: View
 			}
 			.navigationBarTitle("Demo App")
 		}
-		.navigationViewStyle(StackNavigationViewStyle())
 	}
+	
 }
 
 struct MainView_Previews: PreviewProvider
