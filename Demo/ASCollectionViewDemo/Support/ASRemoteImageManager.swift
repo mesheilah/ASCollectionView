@@ -4,6 +4,7 @@ import Combine
 import Foundation
 import UIKit
 
+/// WARNING: ASRemoteImageManager was created for the purposes of this demo project, and is not intended for production use
 class ASRemoteImageManager
 {
 	static let shared = ASRemoteImageManager()

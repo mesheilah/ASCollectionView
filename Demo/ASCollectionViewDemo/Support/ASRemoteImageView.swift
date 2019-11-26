@@ -3,8 +3,10 @@
 import Foundation
 import SwiftUI
 
+/// WARNING: ASRemoteImageView was created for the purposes of this demo project, and is not intended for production use
 struct ASRemoteImageView: View
 {
+	/// WARNING: ASRemoteImageView was created for the purposes of this demo project, and is not intended for production use
 	init(_ url: URL)
 	{
 		self.url = url

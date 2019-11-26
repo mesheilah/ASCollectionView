@@ -1,12 +1,14 @@
 // ASCollectionView. Created by Apptek Studios 2019
 
 import ASCollectionView
+import ASNavigationView
 import SwiftUI
 import UIKit
-import ASNavigationView
 
 struct PhotoGridScreen: View
 {
+	var startingAtBottom: Bool = false
+
 	@State var data: [Post] = DataSource.postsForGridSection(1, number: 1000)
 	@State var selectedItems: IndexSet = []
 	@State var detailViewShown: Bool = false
@@ -27,68 +29,75 @@ struct PhotoGridScreen: View
 			onCellEvent: onCellEvent,
 			onDragDropEvent: onDragDropEvent,
 			itemProvider: { item in
-				//Example of returning a custom item provider (eg. to support drag-drop to other apps)
+				// Example of returning a custom item provider (eg. to support drag-drop to other apps)
 				NSItemProvider(object: item.url as NSURL)
 		})
 		{ item, state in
 			ASNavigationButton(destination: {
-				VStack(spacing: 20) {
+				VStack(spacing: 20)
+				{
 					Text("Item number \(item.offset)")
 						.font(.title)
 					ASNavigationButton(destination: {
-						VStack(spacing: 20) {
+						VStack(spacing: 20)
+						{
 							Text("Deep nav layer...")
-							ASNavigationDismissButton(toScreenNamed: "PHOTOGRID") {
+							ASNavigationDismissButton(toScreenNamed: "PHOTOGRID")
+							{
 								Text("Press here to dismiss DIRECT to the photo grid")
 									.padding()
 									.background(Color(.secondarySystemBackground))
 							}
-							ASNavigationPopToRootButton {
+							ASNavigationPopToRootButton
+							{
 								Text("Press here to pop to root")
 									.padding()
 									.background(Color(.secondarySystemBackground))
 							}
 						}
-					}) {
+					})
+					{
 						Text("Deeper nav layer")
 							.padding()
 							.background(Color(.secondarySystemBackground))
 					}
-					ASNavigationDismissButton {
+					ASNavigationDismissButton
+					{
 						Text("Press here to dismiss (DismissButton)")
 							.padding()
 							.background(Color(.secondarySystemBackground))
 					}
-					ASNavigationPopToRootButton {
+					ASNavigationPopToRootButton
+					{
 						Text("Press here to pop to root")
 							.padding()
 							.background(Color(.secondarySystemBackground))
 					}
-					
 				}
-			}) {
+			})
+			{
 				ZStack(alignment: .bottomTrailing)
 				{
 					GeometryReader
-						{ geom in
-							ASRemoteImageView(item.squareThumbURL)
-								.aspectRatio(1, contentMode: .fill)
-								.frame(width: geom.size.width, height: geom.size.height)
-								.clipped()
-								.opacity(state.isSelected ? 0.7 : 1.0)
+					{ geom in
+						ASRemoteImageView(item.squareThumbURL)
+							.aspectRatio(1, contentMode: .fill)
+							.frame(width: geom.size.width, height: geom.size.height)
+							.clipped()
+							.opacity(state.isSelected ? 0.7 : 1.0)
 					}
-					
+
 					if state.isSelected
 					{
 						ZStack
-							{
-								Circle()
-									.fill(Color.blue)
-								Circle()
-									.strokeBorder(Color.white, lineWidth: 2)
-								Image(systemName: "checkmark")
-									.font(.system(size: 10, weight: .bold))
-									.foregroundColor(.white)
+						{
+							Circle()
+								.fill(Color.blue)
+							Circle()
+								.strokeBorder(Color.white, lineWidth: 2)
+							Image(systemName: "checkmark")
+								.font(.system(size: 10, weight: .bold))
+								.foregroundColor(.white)
 						}
 						.frame(width: 20, height: 20)
 						.padding(10)
@@ -105,7 +114,8 @@ struct PhotoGridScreen: View
 			selectedItems: $selectedItems,
 			section: section)
 			.layout(self.layout)
-			.navigationBarTitle("Explore", displayMode: .large)
+			.initialScrollPosition(startingAtBottom ? .bottom : nil)
+			.navigationBarTitle("Explore", displayMode: .inline)
 			.navigationBarItems(
 				trailing:
 				HStack(spacing: 20)
@@ -119,7 +129,7 @@ struct PhotoGridScreen: View
 							Image(systemName: "trash")
 						}
 					}
-					
+
 					EditButton()
 			})
 	}

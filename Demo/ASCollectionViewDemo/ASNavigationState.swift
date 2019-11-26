@@ -1,23 +1,23 @@
-//
-//  ASNavigationState.swift
-//  ASCollectionViewDemo
-//
-//  Created by Toby Brennan on 22/11/19.
-//  Copyright © 2019 Apptek Studios. All rights reserved.
-//
+// ASCollectionView. Created by Apptek Studios 2019
 
 import Foundation
 import SwiftUI
 
-struct ASNavigationState {
+struct ASNavigationState
+{
 	weak var coordinator: ASNavigationCoordinator?
-	func push<T: View>(_ view: T, withScreenName screenName: String? = nil) {
+	func push<T: View>(_ view: T, withScreenName screenName: String? = nil)
+	{
 		coordinator?.push(view, withScreenName: screenName)
 	}
-	func pop(toScreenNamed screenName: String? = nil) {
+
+	func pop(toScreenNamed screenName: String? = nil)
+	{
 		coordinator?.pop(toScreenNamed: screenName)
 	}
-	func popToRoot() {
+
+	func popToRoot()
+	{
 		coordinator?.popToRoot()
 	}
 }
