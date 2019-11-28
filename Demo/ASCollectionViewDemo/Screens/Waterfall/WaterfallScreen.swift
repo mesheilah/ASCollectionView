@@ -7,9 +7,9 @@ import UIKit
 /// THIS IS A WORK IN PROGRESS
 struct WaterfallScreen: View
 {
-	@State var data: [Post] = DataSource.postsForWaterfallSection(1, number: 1000)
-	@State var selectedItems: [SectionID: IndexSet] = [:]
-	@State var columnMinSize: CGFloat = 150
+	@State private var data: [Post] = DataSource.postsForWaterfallSection(1, number: 1000)
+	@State private var selectedItems: [SectionID: IndexSet] = [:]
+	@State private var columnMinSize: CGFloat = 150
 
 	@Environment(\.editMode) private var editMode
 	var isEditing: Bool

@@ -9,7 +9,7 @@ struct TagsScreen: View
 
 	/// Used in the extra example that shrinks the collectionView to fit its content
 	var shrinkToSize: Bool = false
-	@State var contentSize: CGSize? // This state variable is handed to the collectionView to allow it to store the content size
+	@State private var contentSize: CGSize? // This state variable is handed to the collectionView to allow it to store the content size
 	///
 
 	var body: some View

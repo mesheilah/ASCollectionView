@@ -5,10 +5,10 @@ import SwiftUI
 
 struct PostView: View
 {
-	@State var liked: Bool = false
-	@State var bookmarked: Bool = false
+	@State private var liked: Bool = false
+	@State private var bookmarked: Bool = false
 
-	@State var captionExpanded: Bool = false
+	@State private var captionExpanded: Bool = false
 
 	@Environment(\.invalidateCellLayout) var invalidateCellLayout
 

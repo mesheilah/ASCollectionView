@@ -9,9 +9,8 @@ struct PhotoGridScreen: View
 {
 	var startingAtBottom: Bool = false
 
-	@State var data: [Post] = DataSource.postsForGridSection(1, number: 1000)
-	@State var selectedItems: IndexSet = []
-	@State var detailViewShown: Bool = false
+	@State private var data: [Post] = DataSource.postsForGridSection(1, number: 1000)
+	@State private var selectedItems: IndexSet = []
 
 	@Environment(\.editMode) private var editMode
 	var isEditing: Bool

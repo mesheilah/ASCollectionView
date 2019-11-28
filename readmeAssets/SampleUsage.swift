@@ -5,7 +5,7 @@ import SwiftUI
 
 struct SingleSectionExampleView: View
 {
-	@State var dataExample = (0..<21).map { $0 }
+	@State private var dataExample = (0..<21).map { $0 }
 
 	var body: some View
 	{
@@ -27,8 +27,8 @@ struct SingleSectionExampleView: View
 
 struct ExampleView: View
 {
-	@State var dataExampleA = (0..<21).map { $0 }
-	@State var dataExampleB = (0..<15).map { "ITEM \($0)" }
+	@State private var dataExampleA = (0..<21).map { $0 }
+	@State private var dataExampleB = (0..<15).map { "ITEM \($0)" }
 
 	var body: some View
 	{

@@ -5,7 +5,7 @@ import SwiftUI
 
 struct AppStoreScreen: View
 {
-	@State var data: [(sectionTitle: String, apps: [App])] = (0...20).map
+	@State private var data: [(sectionTitle: String, apps: [App])] = (0...20).map
 	{
 		(Lorem.title, DataSource.appsForSection($0))
 	}

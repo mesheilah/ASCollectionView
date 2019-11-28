@@ -12,13 +12,13 @@ struct RemindersScreen: View
 		case addNew
 	}
 
-	@State var upperData: [GroupModel] = [
+	@State private var upperData: [GroupModel] = [
 		GroupModel(icon: "calendar", title: "Today", color: .blue),
 		GroupModel(icon: "clock.fill", title: "Scheduled", color: .orange),
 		GroupModel(icon: "tray.fill", title: "All", color: .gray),
 		GroupModel(icon: "flag.fill", title: "Flagged", color: .red)
 	]
-	@State var lowerData: [GroupModel] = [
+	@State private var lowerData: [GroupModel] = [
 		GroupModel(icon: "list.bullet", title: "Todo"),
 		GroupModel(icon: "cart.fill", title: "Groceries"),
 		GroupModel(icon: "house.fill", title: "House renovation"),

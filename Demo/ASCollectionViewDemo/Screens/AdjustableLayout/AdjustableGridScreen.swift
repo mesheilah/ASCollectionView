@@ -16,9 +16,9 @@ class LayoutState: ObservableObject
 struct AdjustableGridScreen: View
 {
 	@ObservedObject var layoutState = LayoutState()
-	@State var showConfig: Bool = true
-	@State var animateChange: Bool = false
-	@State var data: [Post] = DataSource.postsForGridSection(1, number: 1000)
+	@State private var showConfig: Bool = true
+	@State private var animateChange: Bool = false
+	@State private var data: [Post] = DataSource.postsForGridSection(1, number: 1000)
 
 	typealias SectionID = Int
 
