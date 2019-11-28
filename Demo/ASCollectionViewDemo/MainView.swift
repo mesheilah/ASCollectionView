@@ -13,42 +13,42 @@ struct MainView: View
 			{
 				Section(header: Text("Example screens"))
 				{
-					ASNavigationButton(screenName: "PHOTOGRID", destination: PhotoGridScreen())
+					ASNavigationButton(style: ASButtonStyleList(), screenName: "PHOTOGRID", destination: PhotoGridScreen())
 					{
 						Image(systemName: "1.square.fill")
 						Text("Photo grid (with edit mode, selection)")
 					}
-					ASNavigationButton(destination: AppStoreScreen())
+					ASNavigationButton(style: ASButtonStyleList(), destination: AppStoreScreen())
 					{
 						Image(systemName: "2.square.fill")
 						Text("App Store Layout")
 					}
-					ASNavigationButton(destination: TagsScreen())
+					ASNavigationButton(style: ASButtonStyleList(), destination: TagsScreen())
 					{
 						Image(systemName: "3.square.fill")
 						Text("Tags Flow Layout")
 					}
-					ASNavigationButton(destination: RemindersScreen())
+					ASNavigationButton(style: ASButtonStyleList(), destination: RemindersScreen())
 					{
 						Image(systemName: "4.square.fill")
 						Text("Reminders Layout")
 					}
-					ASNavigationButton(destination: WaterfallScreen())
+					ASNavigationButton(style: ASButtonStyleList(), destination: WaterfallScreen())
 					{
 						Image(systemName: "5.square.fill")
 						Text("Waterfall Layout")
 					}
-					ASNavigationButton(destination: InstaFeedScreen())
+					ASNavigationButton(style: ASButtonStyleList(), destination: InstaFeedScreen())
 					{
 						Image(systemName: "6.square.fill")
 						Text("Insta Feed (table view)")
 					}
-					ASNavigationButton(destination: MagazineLayoutScreen())
+					ASNavigationButton(style: ASButtonStyleList(), destination: MagazineLayoutScreen())
 					{
 						Image(systemName: "7.square.fill")
 						Text("Magazine Layout (with context menu)")
 					}
-					ASNavigationButton(destination: AdjustableGridScreen())
+					ASNavigationButton(style: ASButtonStyleList(), destination: AdjustableGridScreen())
 					{
 						Image(systemName: "8.square.fill")
 						Text("Adjustable layout")
@@ -56,12 +56,12 @@ struct MainView: View
 				}
 				Section(header: Text("Modified examples"))
 				{
-					ASNavigationButton(screenName: "PHOTOGRID", destination: PhotoGridScreen(startingAtBottom: true))
+					ASNavigationButton(style: ASButtonStyleList(), screenName: "PHOTOGRID", destination: PhotoGridScreen(startingAtBottom: true))
 					{
 						Image(systemName: "hammer")
 						Text("Photo grid (Starting at bottom)")
 					}
-					ASNavigationButton(destination: TagsScreen(shrinkToSize: true))
+					ASNavigationButton(style: ASButtonStyleList(), destination: TagsScreen(shrinkToSize: true))
 					{
 						Image(systemName: "hammer")
 						Text("Tags in self-sizing collection")
