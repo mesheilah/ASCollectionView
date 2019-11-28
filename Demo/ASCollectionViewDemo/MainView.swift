@@ -7,7 +7,7 @@ struct MainView: View
 {
 	var body: some View
 	{
-		ASNavigationView
+		ASNavigationView(placeholderDetailView: Text("Select a view to start"))
 		{
 			List
 			{
